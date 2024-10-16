@@ -1,4 +1,4 @@
-package dev.mv.lobby;
+package dev.mv.lobby.components;
 
 import org.bukkit.Location;
 

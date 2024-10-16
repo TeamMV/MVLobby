@@ -1,4 +1,4 @@
-package dev.mv.lobby;
+package dev.mv.lobby.components;
 
 public abstract class LobbyComponent {
     protected String id;

@@ -1,5 +1,6 @@
-package dev.mv.lobby;
+package dev.mv.lobby.components;
 
+import dev.mv.lobby.PluginListener;
 import dev.mv.ptk.gui.InventoryInterface;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;

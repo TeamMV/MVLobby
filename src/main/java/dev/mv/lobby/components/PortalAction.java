@@ -1,7 +1,6 @@
-package dev.mv.lobby;
+package dev.mv.lobby.components;
 
 import org.bukkit.Location;
-import org.joml.Matrix2d;
 
 import java.util.ArrayList;
 import java.util.List;

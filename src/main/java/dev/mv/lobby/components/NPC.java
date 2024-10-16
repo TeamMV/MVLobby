@@ -1,4 +1,4 @@
-package dev.mv.lobby;
+package dev.mv.lobby.components;
 
 import dev.mv.ptk.utils.display.DisplayName;
 import org.bukkit.Location;
@@ -24,7 +24,7 @@ public class NPC extends LobbyComponent {
         private DisplayName name;
         private ClickAction clickAction;
 
-        Builder(String id) {
+        public Builder(String id) {
             this.id = id;
         }
 
