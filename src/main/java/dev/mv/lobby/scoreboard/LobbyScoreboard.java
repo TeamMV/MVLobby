@@ -38,7 +38,7 @@ public class LobbyScoreboard {
         display.removeSidebar(player);
         if (game != null) {
             game.onPlayerJoin(player);
-            currentSidebar = game.getSidebar();
+            currentSidebar = game.getSidebar(player);
         } else {
             if (currentGame != null) currentGame.onPlayerLeave(player);
             currentSidebar = lobbySidebar;

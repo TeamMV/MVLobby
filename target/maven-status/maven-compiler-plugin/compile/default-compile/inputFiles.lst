@@ -1,9 +1,8 @@
 C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\commands\LobbyCommand.java
 C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\components\ClickAction.java
-C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\components\LobbyComponent.java
 C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\components\NPC.java
-C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\components\Portal.java
-C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\components\PortalAction.java
+C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\conf\LobbyConfig.java
+C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\DamageListener.java
 C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\game\LobbyGame.java
 C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\JoinListener.java
 C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\Lobby.java

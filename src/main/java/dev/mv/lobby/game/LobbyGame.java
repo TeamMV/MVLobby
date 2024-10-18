@@ -6,8 +6,10 @@ import dev.mv.ptk.display.Sidebar;
 import dev.mv.ptk.utils.display.DisplayName;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
+
 public abstract class LobbyGame {
-    private Sidebar sidebar;
+    private HashMap<Player, Sidebar> sidebars;
 
     public abstract DisplayName getDisplayName();
     public abstract String getId();
@@ -16,25 +18,26 @@ public abstract class LobbyGame {
     public abstract void onPlayerLeave(Player player);
 
     public abstract int getLinesScoreboard();
-    public abstract void populateScoreBoard(Sidebar.Builder builder);
+    public abstract void populateScoreBoard(Sidebar.Builder builder, Player player);
 
     public LobbyGame() {
-        setupScoreboard();
+        sidebars = new HashMap<>();
     }
 
-    public void setupScoreboard() {
+    public void setupScoreboard(Player player) {
         var builder = Sidebar.create()
                 .withTitle(Utils.chat(getDisplayName().getAsString()))
                 .withLine()
                     .string(Utils.chat("&7Server: &2%s", Lobby.SERVER_IP))
                     .build()
                 .withNewLine();
-        populateScoreBoard(builder);
+        populateScoreBoard(builder, player);
 
-        sidebar = builder.build();
+        Sidebar sidebar = builder.build();
+        sidebars.put(player, sidebar);
     }
 
-    public Sidebar getSidebar() {
-        return sidebar;
+    public Sidebar getSidebar(Player player) {
+        return sidebars.get(player);
     }
 }

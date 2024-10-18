@@ -1,81 +1,59 @@
 package dev.mv.lobby.components;
 
+import dev.mv.lobby.conf.LobbyConfig;
 import dev.mv.ptk.utils.display.DisplayName;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 
-public class NPC extends LobbyComponent {
+import java.util.HashMap;
+
+public class NPC {
+    public static HashMap<String, NPC> NPCS = new HashMap<>();
+
     private Entity entity;
+    private Location location;
+    private String id;
 
-    private NPC(String id, Entity entity) {
-        super(id);
-        this.entity = entity;
+    public NPC(String id, LobbyConfig config) {
+        this.id = id;
+        this.location = config.getLocation(config.getLobbyWorld(), "npcs." + id + ".location");
+        String skin = config.getFromNpc(id, "entity.skin");
+        if (skin != null) {
+            //todo: create npc
+            entity = config.getLobbyWorld().spawnEntity(location, EntityType.VILLAGER);
+        } else {
+            String entityTypeName = config.getFromNpc(id, "entity");
+            entity = config.getLobbyWorld().spawnEntity(location, EntityType.valueOf(entityTypeName));
+        }
+        Bukkit.broadcastMessage("Spawning npc " + id + ": " + entity);
+        if (entity instanceof LivingEntity le) {
+            le.setAI(false);
+            le.setGravity(false);
+        }
+
+        NPCS.put(id, this);
+    }
+
+    public void setDisplayName(DisplayName name) {
+        name.applyTo(entity);
+    }
+
+    public void setClickAction(ClickAction clickAction) {
+        clickAction.applyTo(entity);
     }
 
     public Entity getEntity() {
         return entity;
     }
 
-    public static class Builder {
-        private String id;
-        private Entity entity;
-        private DisplayName name;
-        private ClickAction clickAction;
+    public Location getLocation() {
+        return location;
+    }
 
-        public Builder(String id) {
-            this.id = id;
-        }
-
-        public EntityBuilder withNewEntity() {
-            return new EntityBuilder(this);
-        }
-
-        public Builder withExistingEntity(Entity entity) {
-            this.entity = entity;
-            return this;
-        }
-
-        public DisplayName.Builder<Builder> withDisplayName() {
-            return new DisplayName.Builder<>(this, dsp -> name = dsp);
-        }
-
-        public ClickAction.Builder<Builder> withClickAction() {
-            return new ClickAction.Builder<>(this, clk -> clickAction = clk);
-        }
-
-        public NPC build() {
-            name.applyTo(entity);
-            clickAction.applyTo(entity);
-            return new NPC(id, entity);
-        }
-
-        public static class EntityBuilder {
-            private Builder builder;
-            private Location location;
-            private EntityType entityType;
-            private World world;
-
-            private EntityBuilder(Builder builder) {
-                this.builder = builder;
-            }
-
-            public EntityBuilder withPosition(Location location) {
-                this.location = location;
-                this.world = location.getWorld();
-                return this;
-            }
-
-            public EntityBuilder withType(EntityType type) {
-                this.entityType = type;
-                return this;
-            }
-
-            public Builder build() {
-                builder.entity = world.spawnEntity(location, entityType);
-                return builder;
-            }
-        }
+    public String getId() {
+        return id;
     }
 }
