@@ -1,5 +1,6 @@
 package dev.mv.lobby.commands;
 
+import dev.mv.lobby.Lobby;
 import dev.mv.lobby.conf.LobbyConfig;
 import dev.mv.lobby.scoreboard.LobbyScoreboard;
 import dev.mv.ptk.Utils;
@@ -20,11 +21,6 @@ public class LobbyCommand extends AbstractCommand {
     }
 
     public void call(Player player) {
-        LobbyScoreboard.SCOREBOARDS.computeIfPresent(player, (p, sb) -> {
-            p.sendMessage(Utils.chat("&4&lSending you back to lobby..."));
-            player.teleport(LobbyConfig.getInstance().getLobbySpawn());
-            sb.setCurrentGame(null);
-            return sb;
-        });
+        Lobby.sendToLobby(player);
     }
 }
