@@ -32,6 +32,7 @@ public class NPC {
         if (entity instanceof LivingEntity le) {
             le.setAI(false);
             le.setGravity(false);
+            le.setSilent(true);
         }
 
         NPCS.put(id, this);

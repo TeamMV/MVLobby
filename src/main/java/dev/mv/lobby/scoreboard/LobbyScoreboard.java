@@ -1,11 +1,9 @@
 package dev.mv.lobby.scoreboard;
 
 import dev.mv.lobby.Lobby;
-import dev.mv.lobby.game.LobbyGame;
 import dev.mv.ptk.Utils;
 import dev.mv.ptk.display.Display;
 import dev.mv.ptk.display.Sidebar;
-import dev.mv.ptk.utils.display.DisplayName;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
