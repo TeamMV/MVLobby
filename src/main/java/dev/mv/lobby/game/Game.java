@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 
 public abstract class Game {
-
     private static HashMap<Player, Game> activeGames = new HashMap<>();
     private static HashMap<Player, Game> rejoinGames = new HashMap<>();
 
@@ -35,6 +34,7 @@ public abstract class Game {
 
     protected final void endGame() {
         players.forEach(activeGames::remove);
+        Games.getInstance().end(this);
     }
 
 
@@ -119,6 +119,7 @@ public abstract class Game {
         return true;
     }
 
+    public abstract int currentPlayers();
     public abstract int playersNeeded();
     public abstract GameState currentGameState();
     public abstract void onPlayerRejoin(Player player);
@@ -147,8 +148,7 @@ public abstract class Game {
         FINISHED
     }
 
-    public abstract String getDisplayName();
-    public abstract String getKey();
     public abstract RejoinKind getRejoinKind();
     public abstract boolean alwaysJoinable();
+    public abstract String getDisplayName();
 }

@@ -1,9 +1,11 @@
 package dev.mv.lobby;
 
+import dev.mv.lobby.commands.PartyCommandTabCompleter;
 import dev.mv.lobby.components.NPC;
 import dev.mv.lobby.conf.LobbyConfig;
 import dev.mv.lobby.game.Game;
 import dev.mv.lobby.game.JoinListener;
+import dev.mv.lobby.party.PartyListener;
 import dev.mv.ptk.PluginToolkit;
 import dev.mv.ptk.Utils;
 import dev.mv.ptk.display.Display;
@@ -26,6 +28,9 @@ public final class Lobby extends PluginToolkit {
         getServer().getPluginManager().registerEvents(new PluginListener(), this);
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
         getServer().getPluginManager().registerEvents(new DamageListener(), this);
+        getServer().getPluginManager().registerEvents(new PartyListener(), this);
+
+        getCommand("p").setTabCompleter(new PartyCommandTabCompleter());
 
         sidebar = Sidebar.create()
                 .withTitle(Utils.chat("&6&lLobby"))

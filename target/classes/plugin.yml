@@ -8,3 +8,5 @@ depend: [
 commands:
   lobby:
     description: 'Return to the lobby'
+  p:
+    description: 'Party commands'
