@@ -1,9 +1,6 @@
 package dev.mv.lobby.commands;
 
 import dev.mv.lobby.Lobby;
-import dev.mv.lobby.conf.LobbyConfig;
-import dev.mv.lobby.scoreboard.LobbyScoreboard;
-import dev.mv.ptk.Utils;
 import dev.mv.ptk.command.AbstractCommand;
 import dev.mv.ptk.command.Command;
 import dev.mv.ptk.command.CommandRoutes;

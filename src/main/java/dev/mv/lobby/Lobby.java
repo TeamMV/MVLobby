@@ -2,15 +2,20 @@ package dev.mv.lobby;
 
 import dev.mv.lobby.components.NPC;
 import dev.mv.lobby.conf.LobbyConfig;
-import dev.mv.lobby.scoreboard.LobbyScoreboard;
+import dev.mv.lobby.game.Game;
+import dev.mv.lobby.game.JoinListener;
 import dev.mv.ptk.PluginToolkit;
 import dev.mv.ptk.Utils;
+import dev.mv.ptk.display.Display;
+import dev.mv.ptk.display.Sidebar;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public final class Lobby extends PluginToolkit {
     public static Lobby INSTANCE;
     public static String SERVER_IP = "mvteam.dev";
+
+    private static Sidebar sidebar;
 
     @Override
     public void start() {
@@ -22,8 +27,12 @@ public final class Lobby extends PluginToolkit {
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
         getServer().getPluginManager().registerEvents(new DamageListener(), this);
 
-        LobbyScoreboard.SCOREBOARDS.clear();
-        Bukkit.getOnlinePlayers().forEach(LobbyScoreboard::new);
+        sidebar = Sidebar.create()
+                .withTitle(Utils.chat("&6&lLobby"))
+                .withLine()
+                .string(Utils.chat("&7Server: &2" + Lobby.SERVER_IP))
+                .build()
+                .build();
     }
 
     @Override
@@ -34,11 +43,13 @@ public final class Lobby extends PluginToolkit {
     }
 
     public static void sendToLobby(Player player) {
-        LobbyScoreboard.SCOREBOARDS.computeIfPresent(player, (p, sb) -> {
-            p.sendMessage(Utils.chat("&4&lSending you back to lobby..."));
-            player.teleport(LobbyConfig.getInstance().getLobbySpawn());
-            sb.setCurrentGame(null);
-            return sb;
-        });
+        if (Game.onLobby(player)) {
+            player.sendMessage(Utils.chat("&4&lSending you back to lobby!"));
+            player.teleport(LobbyConfig.getInstance().getLobbyWorld().getSpawnLocation());
+            Display.getInstance().removeSidebar(player);
+            Display.getInstance().addSidebar(player, sidebar);
+        } else {
+            player.sendMessage(Utils.chat("&4You cannot go to the lobby right now!"));
+        }
     }
 }
