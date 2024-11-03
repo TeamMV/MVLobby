@@ -51,7 +51,7 @@ public class Invite {
         TextComponent t2 = new TextComponent(Utils.chat("&6 You have &360s."));
 
         invitee.spigot().sendMessage(t1, accept, space, decline, t2);
-        task = Bukkit.getScheduler().runTaskLater(Lobby.INSTANCE, () -> {
+        task = Bukkit.getScheduler().runTaskLater(Lobby.getInstance(), () -> {
             invitee.sendMessage(Utils.chat("&cYou did not accept the party!"));
             invites.remove(this);
         }, 20 * 60);

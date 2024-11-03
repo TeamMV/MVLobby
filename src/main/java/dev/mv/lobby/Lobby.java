@@ -1,6 +1,9 @@
 package dev.mv.lobby;
 
+import dev.mv.lobby.chat.ChatListener;
 import dev.mv.lobby.commands.PartyCommandTabCompleter;
+import dev.mv.lobby.components.DamageListener;
+import dev.mv.lobby.components.InteractListener;
 import dev.mv.lobby.components.NPC;
 import dev.mv.lobby.conf.LobbyConfig;
 import dev.mv.lobby.game.Game;
@@ -10,12 +13,10 @@ import dev.mv.ptk.PluginToolkit;
 import dev.mv.ptk.Utils;
 import dev.mv.ptk.display.Display;
 import dev.mv.ptk.display.Sidebar;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public final class Lobby extends PluginToolkit {
-    public static Lobby INSTANCE;
-    public static String SERVER_IP = "mvteam.dev";
+    private static Lobby INSTANCE;
 
     private static Sidebar sidebar;
 
@@ -25,17 +26,18 @@ public final class Lobby extends PluginToolkit {
         LobbyConfig config = LobbyConfig.getInstance();
 
         require("commands").enable();
-        getServer().getPluginManager().registerEvents(new PluginListener(), this);
+        getServer().getPluginManager().registerEvents(new InteractListener(), this);
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
         getServer().getPluginManager().registerEvents(new DamageListener(), this);
         getServer().getPluginManager().registerEvents(new PartyListener(), this);
+        getServer().getPluginManager().registerEvents(new ChatListener(), this);
 
-        getCommand("p").setTabCompleter(new PartyCommandTabCompleter());
+        getCommand("party").setTabCompleter(new PartyCommandTabCompleter());
 
         sidebar = Sidebar.create()
                 .withTitle(Utils.chat("&6&lLobby"))
                 .withLine()
-                .string(Utils.chat("&7Server: &2" + Lobby.SERVER_IP))
+                .string(Utils.chat("&7Server: &2" + config.getServerIp()))
                 .build()
                 .build();
     }
@@ -56,5 +58,9 @@ public final class Lobby extends PluginToolkit {
         } else {
             player.sendMessage(Utils.chat("&4You cannot go to the lobby right now!"));
         }
+    }
+
+    public static Lobby getInstance() {
+        return INSTANCE;
     }
 }

@@ -2,6 +2,7 @@ package dev.mv.lobby.conf;
 
 import dev.mv.lobby.Lobby;
 import dev.mv.lobby.components.NPC;
+import dev.mv.ptk.PluginToolkit;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -19,19 +20,27 @@ public class LobbyConfig {
 
     private World lobbyWorld;
     private Location lobbySpawn;
+    private PluginToolkit toolkit;
+
+    private String ip;
 
     private LobbyConfig() {
-        Lobby.INSTANCE.saveDefaultConfig();
+        toolkit = Lobby.getInstance();
 
-        config = Lobby.INSTANCE.getConfig();
+        toolkit.saveDefaultConfig();
+
+        config = toolkit.getConfig();
         config.addDefault("lobbyWorld", "lobby");
         config.addDefault("lobbyWorldSpawn.x", 0);
         config.addDefault("lobbyWorldSpawn.y", 0);
         config.addDefault("lobbyWorldSpawn.z", 0);
 
         config.addDefault("npcs", "");
+        config.addDefault("ip", "mvteam.dev");
         config.options().copyDefaults(true);
-        Lobby.INSTANCE.saveConfig();
+        toolkit.saveConfig();
+
+        ip = config.getString("ip");
 
         String lobbyWorldName = config.getString("lobbyWorld");
 
@@ -77,5 +86,9 @@ public class LobbyConfig {
 
     public FileConfiguration getInternal() {
         return config;
+    }
+
+    public String getServerIp() {
+        return ip;
     }
 }

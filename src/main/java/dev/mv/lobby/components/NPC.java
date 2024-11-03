@@ -46,6 +46,10 @@ public class NPC {
         clickAction.applyTo(entity);
     }
 
+    public void removeClickAction(ClickAction clickAction) {
+        clickAction.removeFrom(entity);
+    }
+
     public Entity getEntity() {
         return entity;
     }

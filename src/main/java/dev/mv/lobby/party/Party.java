@@ -19,7 +19,7 @@ public class Party {
         return parties.get(member);
     }
 
-    public static void format(Player player, String... messages) {
+    private static void format(Player player, String... messages) {
         player.sendMessage(Utils.chat("&9&l------------------------------"));
         for (String msg : messages) {
             player.sendMessage(Utils.chat(msg));
@@ -27,7 +27,7 @@ public class Party {
         player.sendMessage(Utils.chat("&9&l------------------------------"));
     }
 
-    public void settings(String[] args) {
+    public void settings(Player player, String[] args) {
         //nothing for nwo
     }
 
@@ -51,6 +51,12 @@ public class Party {
         invitePerms = InvitePerms.LEADER;
 
         parties.put(leader, this);
+    }
+
+    public void sendChatMessage(String message) {
+        players.forEach(p -> {
+            p.sendMessage(Utils.chat("&9Party &8> %s", message));
+        });
     }
 
     public void disband() {
@@ -144,7 +150,7 @@ public class Party {
                 p.sendMessage(Utils.chat("&c%s has left, they will be removed from the party in 60 seconds!", player.getName()));
             });
         }
-        BukkitTask task = Bukkit.getScheduler().runTaskLater(Lobby.INSTANCE, () -> {
+        BukkitTask task = Bukkit.getScheduler().runTaskLater(Lobby.getInstance(), () -> {
             if (!hasPlayer(player)) return;
             if (leader == player) {
                 players.forEach(p -> {

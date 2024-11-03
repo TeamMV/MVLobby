@@ -1,85 +1,52 @@
 package dev.mv.lobby.components;
 
-import dev.mv.lobby.PluginListener;
-import dev.mv.ptk.gui.InventoryInterface;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.function.Consumer;
 
-public class ClickAction {
-    private InventoryInterface ui;
-    private List<Builder.Call> calls;
-    private long currentCallback;
+public abstract class ClickAction {
 
-    private ClickAction(InventoryInterface ui) {
-        this.ui = ui;
-        calls = new ArrayList<>();
-    }
+    private HashMap<Entity, Consumer<PlayerInteractEntityEvent>> appliedEntities = new HashMap<>();
+    private HashMap<Entity, Consumer<EntityDamageByEntityEvent>> appliedLeftClickEntities = new HashMap<>();
+    protected boolean leftClickable = false;
 
     public void applyTo(Entity entity) {
-        currentCallback = PluginListener.interactionCallback(e -> {
-            if (e.getRightClicked().getEntityId() == entity.getEntityId()) {
-                if (ui != null) {
-                    ui.open(e.getPlayer());
+        if (!appliedEntities.containsKey(entity)) {
+            Consumer<PlayerInteractEntityEvent> interaction = e -> {
+                if (e.getRightClicked().getEntityId() == entity.getEntityId()) {
+                    callback(e.getPlayer());
                 }
-                calls.forEach(c -> c.invoke(e.getPlayer()));
-            }
-        });
+            };
+            InteractListener.addCallback(interaction);
+            appliedEntities.put(entity, interaction);
+        }
+        if (leftClickable && !appliedLeftClickEntities.containsKey(entity)) {
+            Consumer<EntityDamageByEntityEvent> leftClickInteraction = e -> {
+                if (e.getEntity().getEntityId() == entity.getEntityId()) {
+                    callback((Player) e.getDamager());
+                    e.setCancelled(true);
+                }
+            };
+            InteractListener.addLeftClickCallback(leftClickInteraction);
+            appliedLeftClickEntities.put(entity, leftClickInteraction);
+        }
     }
 
-    public static class Builder<B> {
-        private InventoryInterface ui;
-        private List<Call> calls;
-
-        private final Consumer<ClickAction> out;
-        private B parent;
-
-        public Builder(B parent, Consumer<ClickAction> out) {
-            this.parent = parent;
-            this.out = out;
-            calls = new ArrayList<>();
+    public void removeFrom(Entity entity) {
+        if (appliedEntities.containsKey(entity)) {
+            InteractListener.removeCallback(appliedEntities.get(entity));
+            appliedEntities.remove(entity);
         }
-
-        public Builder<B> withInventoryOpen(InventoryInterface ui) {
-            this.ui = ui;
-            return this;
-        }
-
-        public Builder<B> withCall(String methodName, Class<?> clazz) {
-            this.calls.add(new Call(methodName, clazz));
-            return this;
-        }
-
-        public static class Call {
-            private Method method;
-
-            public Call(String methodName, Class<?> clazz) {
-                try {
-                    method = clazz.getMethod(methodName, Player.class);
-                } catch (NoSuchMethodException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            public void invoke(Player player) {
-                try {
-                    method.invoke(null, player);
-                } catch (IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        public B build() {
-            ClickAction action = new ClickAction(ui);
-            out.accept(action);
-            action.calls = calls;
-            return parent;
+        if (appliedLeftClickEntities.containsKey(entity)) {
+            InteractListener.removeLeftClickCallback(appliedLeftClickEntities.get(entity));
+            appliedLeftClickEntities.remove(entity);
         }
     }
+
+    public abstract void callback(Player player);
+
 }

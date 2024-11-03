@@ -10,7 +10,7 @@ import dev.mv.ptk.command.CommandRoutes;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-@Command("p")
+@Command("party")
 public class PartyCommand extends AbstractCommand {
     public PartyCommand() {
         super(new CommandRoutes.Builder()
@@ -202,7 +202,7 @@ public class PartyCommand extends AbstractCommand {
                 player.sendMessage(Utils.chat("&cInvalid usage: /party settings <setting> <value>"));
                 return;
             }
-            party.settings(args);
+            party.settings(player, args);
         }
     }
 }

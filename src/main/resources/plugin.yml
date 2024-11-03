@@ -5,8 +5,21 @@ api-version: '1.20'
 depend: [
   'MVPtk'
 ]
+authors: [
+  'Maxim Savenkov',
+  'Julian Hohenhausen'
+]
 commands:
   lobby:
     description: 'Return to the lobby'
-  p:
+  party:
     description: 'Party commands'
+    aliases: ['p']
+  chat:
+    description: 'Choose default chat'
+  pchat:
+    description: 'Speak in party chat'
+    aliases: ['pc']
+  achat:
+    description: 'Speak in all chat'
+    aliases: ['ac', 'all']
