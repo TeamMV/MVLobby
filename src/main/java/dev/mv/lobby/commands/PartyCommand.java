@@ -2,11 +2,13 @@ package dev.mv.lobby.commands;
 
 import dev.mv.lobby.party.Party;
 import dev.mv.lobby.party.Invite;
+import dev.mv.lobby.rank.Ranks;
 import dev.mv.ptk.Utils;
 import dev.mv.ptk.command.AbstractCommand;
 import dev.mv.ptk.command.Command;
 import dev.mv.ptk.command.CommandRoute;
 import dev.mv.ptk.command.CommandRoutes;
+import dev.mv.utilsx.collection.Vec;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -29,26 +31,32 @@ public class PartyCommand extends AbstractCommand {
                 .withRoute()
                 .withNamed("kick")
                 .withType(CommandRoute.ArgumentType.STRING)
+                .withTabCompleter(PartyCommand::getPartyPlayers)
                 .then()
                 .withRoute()
                 .withNamed("invite")
                 .withType(CommandRoute.ArgumentType.STRING)
+                .withPlayerTabCompleter()
                 .then()
                 .withRoute()
                 .withNamed("i")
                 .withType(CommandRoute.ArgumentType.STRING)
+                .withPlayerTabCompleter()
                 .then()
                 .withRoute()
                 .withNamed("accept")
                 .withType(CommandRoute.ArgumentType.STRING)
+                .withTabCompleter(PartyCommand::getInvitePlayers)
                 .then()
                 .withRoute()
                 .withNamed("decline")
                 .withType(CommandRoute.ArgumentType.STRING)
+                .withTabCompleter(PartyCommand::getInvitePlayers)
                 .then()
                 .withRoute()
                 .withNamed("transfer")
                 .withType(CommandRoute.ArgumentType.STRING)
+                .withTabCompleter(PartyCommand::getPartyPlayers)
                 .then()
                 .withRoute()
                 .withNamed("disband")
@@ -58,10 +66,27 @@ public class PartyCommand extends AbstractCommand {
                 .withType(CommandRoute.ArgumentType.EXTRA)
                 .then()
                 .withRoute()
+                .withNamed("chat")
+                .withType(CommandRoute.ArgumentType.EXTRA)
+                .then()
+                .withRoute()
                 .withType(CommandRoute.ArgumentType.STRING)
+                .withPlayerTabCompleter()
                 .then()
                 .build()
         );
+    }
+
+    private static Vec<String> getPartyPlayers(Player player) {
+        Party party = Party.findParty(player);
+        if (party == null) {
+            return new Vec<>();
+        }
+        return party.getPlayers().iterCopied().map(Player::getName).collect();
+    }
+
+    private static Vec<String> getInvitePlayers(Player player) {
+        return Invite.findInvites(player).map(i -> i.getInviter().getName()).collect();
     }
 
     public void call(Player player, String invitee) {
@@ -204,5 +229,15 @@ public class PartyCommand extends AbstractCommand {
             }
             party.settings(player, args);
         }
+    }
+
+    public void call_chat(Player player, String[] args) {
+        Party party = Party.findParty(player);
+        if (party == null) {
+            player.sendMessage(Utils.chat("&cYou are not in a party!"));
+            return;
+        }
+        String message = String.join(" ", args);
+        party.sendChatMessage(Ranks.getInstance().format(player, message));
     }
 }

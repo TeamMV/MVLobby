@@ -7,14 +7,16 @@ import dev.mv.ptk.command.Command;
 import dev.mv.ptk.command.CommandRoute;
 import dev.mv.ptk.command.CommandRoutes;
 import dev.mv.utilsx.UtilsX;
+import dev.mv.utilsx.collection.Vec;
 import org.bukkit.entity.Player;
 
 @Command("chat")
 public class ChatCommand extends AbstractCommand {
-    protected ChatCommand() {
+    public ChatCommand() {
         super(new CommandRoutes.Builder()
                 .withRoute()
                 .withType(CommandRoute.ArgumentType.STRING)
+                .withTabCompleter(new Vec<>("a", "all", "p", "party"))
                 .then()
                 .build()
         );

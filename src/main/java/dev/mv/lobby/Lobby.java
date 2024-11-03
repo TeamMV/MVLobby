@@ -1,7 +1,6 @@
 package dev.mv.lobby;
 
 import dev.mv.lobby.chat.ChatListener;
-import dev.mv.lobby.commands.PartyCommandTabCompleter;
 import dev.mv.lobby.components.DamageListener;
 import dev.mv.lobby.components.InteractListener;
 import dev.mv.lobby.components.NPC;
@@ -31,8 +30,6 @@ public final class Lobby extends PluginToolkit {
         getServer().getPluginManager().registerEvents(new DamageListener(), this);
         getServer().getPluginManager().registerEvents(new PartyListener(), this);
         getServer().getPluginManager().registerEvents(new ChatListener(), this);
-
-        getCommand("party").setTabCompleter(new PartyCommandTabCompleter());
 
         sidebar = Sidebar.create()
                 .withTitle(Utils.chat("&6&lLobby"))
