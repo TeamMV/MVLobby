@@ -5,6 +5,7 @@ import dev.mv.ptk.PluginToolkit;
 import dev.mv.ptk.Ptk;
 import dev.mv.ptk.Utils;
 import dev.mv.ptk.module.SingletonModule;
+import dev.mv.ptk.style.Chat;
 import dev.mv.utilsx.collection.Vec;
 import org.bukkit.entity.Player;
 
@@ -92,33 +93,33 @@ public class Games extends SingletonModule {
     public void joinGame(Player player, String gameId) {
         LobbyGame info = gameInfo.get(gameId);
         if (info == null) {
-            player.sendMessage(Utils.chat("&cThis game does not exist!"));
+            Chat.send(player, "&+eThis game does not exist!");
             return;
         }
         Party party = Party.findParty(player);
         if (party == null) {
             Game game = findGame(gameId, 1);
             if (game == null) {
-                System.out.println(Utils.chat("&cThere was an error joining this game!"));
+                Chat.send(player, "&+eThere was an error joining this game!");
                 return;
             }
             game.join(player);
         } else {
             if (!party.isLeader(player)) {
-                player.sendMessage(Utils.chat("&cYou cannot join a game if you are not the party leader!"));
+                Chat.send(player, "&+eYou cannot join a game if you are not the party leader!");
                 return;
             }
             if (!party.isReady()) {
-                player.sendMessage(Utils.chat("&cYou cannot join a game if players in your party are offline!"));
+                Chat.send(player, "&+eYou cannot join a game if players in your party are offline!");
                 return;
             }
             if (info.maxPlayers() >= 0 && party.getPlayers().len() > info.maxPlayers()) {
-                player.sendMessage(Utils.chat("&cYour party is too big to join this game (Max players: %d)! Discard players to continue.", info.maxPlayers()));
+                Chat.send(player, "&+eYour party is too big to join this game (Max players: %d)! Discard players to continue.", info.maxPlayers());
                 return;
             }
             Game game = findGame(gameId, party.getPlayers().len());
             if (game == null) {
-                System.out.println(Utils.chat("&cThere was an error joining this game!"));
+                Chat.send(player, "&+eThere was an error joining this game!");
                 return;
             }
             party.getPlayers().forEach(game::join);

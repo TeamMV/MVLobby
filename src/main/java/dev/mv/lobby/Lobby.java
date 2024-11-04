@@ -12,6 +12,7 @@ import dev.mv.ptk.PluginToolkit;
 import dev.mv.ptk.Utils;
 import dev.mv.ptk.display.Display;
 import dev.mv.ptk.display.Sidebar;
+import dev.mv.ptk.style.Chat;
 import org.bukkit.entity.Player;
 
 public final class Lobby extends PluginToolkit {
@@ -48,12 +49,12 @@ public final class Lobby extends PluginToolkit {
 
     public static void sendToLobby(Player player) {
         if (Game.onLobby(player)) {
-            player.sendMessage(Utils.chat("&4&lSending you back to lobby!"));
+            Chat.send(player, "&+eSending you back to lobby...");
             player.teleport(LobbyConfig.getInstance().getLobbyWorld().getSpawnLocation());
             Display.getInstance().removeSidebar(player);
             Display.getInstance().addSidebar(player, sidebar);
         } else {
-            player.sendMessage(Utils.chat("&4You cannot go to the lobby right now!"));
+            Chat.send(player, "&+eYou cannot go to the lobby right now!");
         }
     }
 

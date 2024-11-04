@@ -1,7 +1,9 @@
 package dev.mv.lobby.party;
 
 import dev.mv.lobby.Lobby;
+import dev.mv.lobby.rank.Ranks;
 import dev.mv.ptk.Utils;
+import dev.mv.ptk.style.Chat;
 import dev.mv.utilsx.collection.Vec;
 import dev.mv.utilsx.sequence.Sequence;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -37,23 +39,27 @@ public class Invite {
 
         TextComponent t1;
         if (inviter.equals(party.getLeader())) {
-            t1 = new TextComponent(Utils.chat("&6%s invited you to their party! ", inviter.getName()));
+            t1 = new TextComponent(Chat.format(invitee, "%s &+pinvited you to their party! You have &+n60s &+pto join.", Ranks.format(inviter)));
         } else {
-            t1 = new TextComponent(Utils.chat("&6%s invited you to %s's party! ", inviter.getName(), party.getLeader().getName()));
+            t1 = new TextComponent(Chat.format(invitee, "%s &+pinvited you to %s&+p's party! You have &+n60s &+pto join.", Ranks.format(inviter), Ranks.format(party.getLeader())));
         }
-        TextComponent accept = new TextComponent(Utils.chat("&e&l[accept]"));
+        TextComponent accept = new TextComponent(Chat.format(invitee, "&++[accept]"));
         TextComponent space = new TextComponent(" ");
-        TextComponent decline = new TextComponent(Utils.chat("&c&l[decline]"));
+        TextComponent decline = new TextComponent(Chat.format(invitee, "&+-[decline]"));
         accept.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/p accept " + party.getLeader().getName()));
-        accept.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(Utils.chat("&6Join party"))));
+        accept.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(Chat.format(invitee, "&++Join party"))));
         decline.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/p decline " + party.getLeader().getName()));
-        decline.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(Utils.chat("&6Decline party"))));
-        TextComponent t2 = new TextComponent(Utils.chat("&6 You have &360s."));
+        decline.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(Chat.format(invitee,"&+-Decline invite"))));
 
-        invitee.spigot().sendMessage(t1, accept, space, decline, t2);
+        Party.sendSystemMessage(invitee, () -> {
+            invitee.spigot().sendMessage(t1);
+            invitee.spigot().sendMessage(accept, space, decline);
+        });
+
         task = Bukkit.getScheduler().runTaskLater(Lobby.getInstance(), () -> {
-            invitee.sendMessage(Utils.chat("&cYou did not accept the party!"));
+            Party.sendSystemMessage(invitee, "&+eYour party invite from %s &+ehas expired.", Ranks.format(inviter));
             invites.remove(this);
+            party.inviteRemoved(this);
         }, 20 * 60);
 
         invites.push(this);
@@ -62,15 +68,15 @@ public class Invite {
     public void accept() {
         task.cancel();
         invites.remove(this);
-        invitee.sendMessage(Utils.chat("&6Joined %s's party!", party.getLeader().getName()));
+        Party.sendSystemMessage(invitee, "&+pYou have joined %s&+p's party!", Ranks.format(party.getLeader()));
         party.inviteSuccess(this);
     }
 
     public void decline() {
         task.cancel();
         invites.remove(this);
-        invitee.sendMessage(Utils.chat("&6Declined %s's party!", party.getLeader().getName()));
-        party.inviteDeclined(this);
+        Party.sendSystemMessage(invitee, "&+pYou have declined %s&+p's party invite!", Ranks.format(party.getLeader()));
+        party.inviteRemoved(this);
     }
 
     public Player getInvitee() {
@@ -88,6 +94,5 @@ public class Invite {
     public void partyDestroyed() {
         task.cancel();
         invites.remove(this);
-        invitee.sendMessage(Utils.chat("&c%s's party has been destroyed! You cannot join now :(", party.getLeader().getName()));
     }
 }

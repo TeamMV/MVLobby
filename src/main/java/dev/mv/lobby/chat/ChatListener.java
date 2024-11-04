@@ -3,6 +3,7 @@ package dev.mv.lobby.chat;
 import dev.mv.lobby.party.Party;
 import dev.mv.lobby.rank.Ranks;
 import dev.mv.ptk.Utils;
+import dev.mv.ptk.style.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,7 +28,7 @@ public class ChatListener implements Listener {
             Party party = Party.findParty(player);
             if (party == null) {
                 selectedChats.put(player, ChatType.ALL);
-                player.sendMessage(Utils.chat("&cYou are no longer in a party and have been moved to the ALL chat"));
+                Chat.send(player, "&+eYou are no longer in a party and have been moved to the ALL chat");
                 return;
             }
             party.sendChatMessage(Ranks.getInstance().format(player, message));

@@ -1,8 +1,10 @@
 package dev.mv.lobby.game;
 
 import dev.mv.lobby.Lobby;
+import dev.mv.lobby.conf.LobbyConfig;
 import dev.mv.ptk.Utils;
 import dev.mv.ptk.display.Sidebar;
+import dev.mv.ptk.style.Chat;
 import dev.mv.utilsx.collection.Vec;
 import org.bukkit.entity.Player;
 
@@ -23,7 +25,7 @@ public abstract class Game {
         Sidebar.Builder builder = new Sidebar.Builder();
         builder.withTitle(getDisplayName())
                 .withLine()
-                .string(Utils.chat("&7Server: &2" + Lobby.SERVER_IP))
+                .string(Utils.chat("&7Server: &2" + LobbyConfig.getInstance().getServerIp()))
                 .build()
                 .withNewLine();
 
@@ -63,7 +65,7 @@ public abstract class Game {
     public final void leave(Player player) {
         if (currentGameState() == GameState.PLAYING) {
             if (getRejoinKind() == RejoinKind.FORCED) {
-                player.sendMessage(Utils.chat("&cYou cannot leave mid game!"));
+                Chat.send(player, "&+eYou cannot leave mid game!");
                 return;
             }
             else if (getRejoinKind() == RejoinKind.ALLOWED) {

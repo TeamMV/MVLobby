@@ -1,10 +1,16 @@
+C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\chat\ChatListener.java
+C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\commands\AChatCommand.java
+C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\commands\ChatCommand.java
 C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\commands\LobbyCommand.java
 C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\commands\PartyCommand.java
-C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\commands\PartyCommandTabCompleter.java
+C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\commands\PChatCommand.java
 C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\components\ClickAction.java
+C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\components\DamageListener.java
+C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\components\GameClickAction.java
+C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\components\InteractListener.java
 C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\components\NPC.java
+C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\components\OldClickAction.java
 C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\conf\LobbyConfig.java
-C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\DamageListener.java
 C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\game\Game.java
 C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\game\Games.java
 C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\game\JoinListener.java
@@ -13,4 +19,5 @@ C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\Lo
 C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\party\Invite.java
 C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\party\Party.java
 C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\party\PartyListener.java
-C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\PluginListener.java
+C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\rank\Rank.java
+C:\Users\v22ju\Desktop\coding\java\plugins\MVLobby\src\main\java\dev\mv\lobby\rank\Ranks.java

@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 
 @Command("achat")
 public class AChatCommand extends AbstractCommand {
-    protected AChatCommand() {
+    public AChatCommand() {
         super(new CommandRoutes.Builder()
                 .withRoute()
                 .withType(CommandRoute.ArgumentType.EXTRA)
